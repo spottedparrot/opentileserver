@@ -4,7 +4,7 @@ This script is for building a basic tile server with OpenStreetMap data.
 
 Only for use on a clean Ubuntu 14 install!!
 
-NOTE: This is a forked version of the MapFig/OpenTileServer. It has been updated to work on the Ubuntu 14.04 64bit server.
+**NOTE: This is a forked version of the MapFig/OpenTileServer. It has been updated to work on the Ubuntu 14.04 64bit server.**
 
 Before proceeding, see <a href="opentileserver.org" target="blank"> opentileserver.org </a> for limitations, etc..
 
@@ -22,21 +22,26 @@ vi and change the password on line 19 to something difficult
 OSM_USER_PASS='osm2015SgsjcK';	#CHANGE ME
 </code>
 
+Step 4:
+
 Check that you have a valid Locale set:
 
 If you DONT GET values for ALL of the following variables, do the following adition step:
 
+<code>
 sudo locale-gen "en_GB.UTF-8"
+</code>
 
 Then edit the /etc/environment and add following:
 
 <code>
-# Fix the locale LANGUAGE and LC_ALL missing from locale command:
 LANGUAGE=en_GB.UTF-8
 LC_ALL=en_GB.UTF-8
 </code>
 
 Then reboot the server.
+
+Step 5:
 
 If using a non-Latin alphabet, ucomment line 24 below if needed:
 
@@ -44,11 +49,11 @@ If using a non-Latin alphabet, ucomment line 24 below if needed:
 
 See https://github.com/MapFig/opentileserver/issues/4
 
-Step 4: Install missing packages (seemt o bemissing asof 24.11.2016):
+Step 6: Install missing packages (seemt o bemissing asof 24.11.2016):
 
 sudo apt-get install bc dialog
 
-Step 5: Run the script
+Step 6: Run the script
 
 ## Script usage:
 
