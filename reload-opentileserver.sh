@@ -22,7 +22,9 @@ if [ -z "${PBF_URL}" ]; then
 fi
 
 #C_MEM is the sum of free memory and cached memory
-C_MEM=$(free -m | grep -i 'mem:' | sed 's/[ \t]\+/ /g' | cut -f4,7 -d' ' | tr ' ' '+' | bc)
+# DEZ fix --Cto 2000 for openvz vps boxes that have no swap (checked on vps with 4gb):
+#C_MEM=$(free -m | grep -i 'mem:' | sed 's/[ \t]\+/ /g' | cut -f4,7 -d' ' | tr ' ' '+' | bc)
+C_MEM=2000
 NP=$(grep -c 'model name' /proc/cpuinfo)
 osm2pgsql_OPTS="--slim -d ${OSM_DB} -C ${C_MEM} --number-processes ${NP}"
 PG_VER=$(pg_config | grep '^VERSION' | cut -f4 -d' ' | cut -f1,2 -d.)

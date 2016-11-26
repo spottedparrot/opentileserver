@@ -20,13 +20,17 @@ CND_FOLDER='https://www.mapfig.com/'
 
 #User for DB and rednerd
 OSM_USER='tile';			#system user for renderd and db
-OSM_USER_PASS='osm2015SgsjcK';	#CHANGE ME
+OSM_USER_PASS='tile534547fgh';	#CHANGE ME
 OSM_PG_PASS=$(< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c32);
 OSM_DB='gis';				#osm database name
 VHOST=$(hostname -f)
 
 #C_MEM is the sum of free memory and cached memory
-C_MEM=$(free -m | grep -i 'mem:' | sed 's/[ \t]\+/ /g' | cut -f4,7 -d' ' | tr ' ' '+' | bc)
+# DEZ: Import of large osm pdbf (north america is 7.4gb fails)
+# So we decreased to set value of 2000 (2 gig of ram) to avoid out of memory error:
+#C_MEM=$(free -m | grep -i 'mem:' | sed 's/[ \t]\+/ /g' | cut -f4,7 -d' ' | tr ' ' '+' | bc)
+C_MEM=2000
+
 NP=$(grep -c 'model name' /proc/cpuinfo)
 osm2pgsql_OPTS="--slim -d ${OSM_DB} -C ${C_MEM} --number-processes ${NP} --hstore"
 
@@ -182,7 +186,7 @@ apt-get -y install	libboost-all-dev subversion git-core tar unzip wget bzip2 \
 					libcairomm-1.0-dev apache2 apache2-dev libagg-dev liblua5.2-dev \
 					ttf-unifont fonts-arphic-ukai fonts-arphic-uming fonts-thai-tlwg \
 					lua5.1 liblua5.1-dev libgeotiff-epsg node-carto \
-					postgresql postgresql-contrib postgis postgresql-9.3-postgis-2.1 \
+					postgresql-9.3 postgresql-contrib postgis postgresql-9.3-postgis-2.1 \
 					php5 libapache2-mod-php5
 
 if [ $? -ne 0 ]; then	echo "Error: Apt install failed";	exit 1; fi
@@ -363,7 +367,7 @@ if [ "${WEB_MODE}" == 'ssl' ]; then
 		chmod 400 server.key
 
 		openssl req -new -key server.key -days 3650 -out server.crt -passin pass:${SSL_PASS} -x509 -subj '/C=CA/ST=Frankfurt/L=Frankfurt/O=acuciva-de.com/CN=acuciva-de.com/emailAddress=info@acugis.com'
-		chown apache:apache server.key server.crt
+		chown www-data:www-data server.key server.crt
 	fi
 
 	cat >/etc/apache2/sites-available/000-default-ssl.conf <<CMD_EOF

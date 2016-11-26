@@ -4,6 +4,8 @@ This script is for building a basic tile server with OpenStreetMap data.
 
 Only for use on a clean Ubuntu 14 install!!
 
+NOTE: This is a forked version of the MapFig/OpenTileServer. It has been updated to work on the Ubuntu 14.04 64bit server.
+
 Before proceeding, see <a href="opentileserver.org" target="blank"> opentileserver.org </a> for limitations, etc..
 
 Step 1: Get opentileserver.sh script from GitHub
@@ -20,13 +22,33 @@ vi and change the password on line 19 to something difficult
 OSM_USER_PASS='osm2015SgsjcK';	#CHANGE ME
 </code>
 
+Check that you have a valid Locale set:
+
+If you DONT GET values for ALL of the following variables, do the following adition step:
+
+sudo locale-gen "en_GB.UTF-8"
+
+Then edit the /etc/environment and add following:
+
+<code>
+# Fix the locale LANGUAGE and LC_ALL missing from locale command:
+LANGUAGE=en_GB.UTF-8
+LC_ALL=en_GB.UTF-8
+</code>
+
+Then reboot the server.
+
 If using a non-Latin alphabet, ucomment line 24 below if needed:
 
 <code>export LC_ALL=C</code>
 
 See https://github.com/MapFig/opentileserver/issues/4
 
-Step 4: Run the script
+Step 4: Install missing packages (seemt o bemissing asof 24.11.2016):
+
+sudo apt-get install bc dialog
+
+Step 5: Run the script
 
 ## Script usage:
 
@@ -62,6 +84,11 @@ You should see a page as below:
 
 ![installation complete](http://opentileserver.org/assets/img/welcome.jpg)
 
+
+Additional setup steps:
+
+The script seems to add the servers ip after the localhost ip in both html files.
+So edit both leaflet and openlayers example html files and remove the local ip address: 127.0.0.2 
 
 Click on both the OpenLayer and Leaflet Examples and check your installation is rendering
 
